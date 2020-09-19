@@ -26,7 +26,6 @@ class Watchlist:
             self._len = len(self._items)
 
     def add(self, name: str, status: str = None):
-        print(1)
         if status is None:
             status = 'unwatched'
         elif status not in STATUSES:
@@ -87,7 +86,6 @@ class Watchlist:
         return result
 
     def to_file(self, filename: str):
-        print(2)
         with open(filename, 'w', newline='') as f:
             writer = csv.DictWriter(f, fieldnames=FIELD_NAMES)
 

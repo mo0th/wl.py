@@ -26,7 +26,7 @@ if 'WL_PATH' in os.environ:
     filename = os.path.expanduser(os.environ['WL_PATH'])
 
 read_required = False
-write_required = True
+write_required = False
 
 parser = argparse.ArgumentParser()
 
@@ -42,7 +42,8 @@ add_parser.add_argument(
     type=wl_status
 )
 
-remove_parser = subparsers.add_parser('remove', help='remove an item')
+remove_parser = subparsers.add_parser(
+    'remove', aliases=['rm'], help='remove an item')
 remove_parser.add_argument('name', help='name of the item to remove')
 
 update_parser = subparsers.add_parser(
@@ -76,7 +77,7 @@ summary_parser = subparsers.add_parser(
 
 args = parser.parse_args()
 
-print(args)
+# print(args)
 
 try:
     wl = Watchlist.from_file(filename)
@@ -84,7 +85,6 @@ except FileNotFoundError:
     wl = Watchlist()
 
 if args.command == 'add':
-    print(3)
     wl.add(args.name, args.status)
     write_required = True
 
@@ -123,5 +123,4 @@ elif args.command == 'summary':
 
 
 if wl and write_required:
-    print('saving...')
     wl.to_file(filename)
