@@ -31,9 +31,9 @@ write_required = False
 parser = argparse.ArgumentParser()
 
 subparsers = parser.add_subparsers(
-    dest='command', help='thingo', required=True)
+    dest='command', help='the command to run', required=True)
 
-add_parser = subparsers.add_parser('add', help='add an item')
+add_parser = subparsers.add_parser('add', aliases=['a'], help='add an item')
 add_parser.add_argument('name', help="name of the new item")
 add_parser.add_argument(
     '-s', '--status',
@@ -48,6 +48,7 @@ remove_parser.add_argument('name', help='name of the item to remove')
 
 update_parser = subparsers.add_parser(
     'update',
+    aliases=['u'],
     help='update the status of an item'
 )
 update_parser.add_argument('name', help="name of the item to update")
@@ -59,7 +60,8 @@ update_parser.add_argument(
     type=wl_status
 )
 
-search_parser = subparsers.add_parser('search', help="search for an item")
+search_parser = subparsers.add_parser(
+    'search', aliases=['s'], help="search for an item")
 search_parser.add_argument('search', help='search string')
 search_parser.add_argument(
     '-s', '--status',
@@ -68,10 +70,12 @@ search_parser.add_argument(
     type=wl_status
 )
 
-list_parser = subparsers.add_parser('list', help='list all items')
+list_parser = subparsers.add_parser(
+    'list', aliases=['ls'], help='list all items')
 
 summary_parser = subparsers.add_parser(
     'summary',
+    aliases=['sum', 'm'],
     help="show a summary of your watch list"
 )
 
@@ -84,28 +88,28 @@ try:
 except FileNotFoundError:
     wl = Watchlist()
 
-if args.command == 'add':
+if args.command in ['add', 'a']:
     wl.add(args.name, args.status)
     write_required = True
 
-elif args.command == 'update':
+elif args.command in ['update', 'u']:
     wl.update(args.name, args.status)
     write_required = True
 
-elif args.command == 'remove':
+elif args.command in ['remove', 'rm']:
     wl.remove(args.name)
     write_required = True
 
-elif args.command == 'list':
+elif args.command in ['list', 'ls']:
     for item in wl:
         print_item(**item)
 
-elif args.command == 'search':
+elif args.command in ['search', 's']:
     results = wl.search(args.search, args.status)
     for item in results:
         print_item(**item)
 
-elif args.command == 'summary':
+elif args.command in ['summary', 'sum', 'm']:
     total = 0
     summary = wl.summary()
     status_col_width = len(max(STATUSES, key=len)) + 1
