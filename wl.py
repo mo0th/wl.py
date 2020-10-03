@@ -44,7 +44,7 @@ class Watchlist:
     def items(self):
         return self._items
 
-    def search(self, search_string, status=None) -> Iterable[WatchListItem]:
+    def search(self, search_string: str, status: str = None) -> Iterable[WatchListItem]:
         if status is None:
             return filter(lambda i: search_string in i['name'], self)
         elif status not in STATUSES:
@@ -52,7 +52,7 @@ class Watchlist:
         else:
             return filter(lambda i: search_string in i['name'] and i['status'] == status, self)
 
-    def update(self, name, status):
+    def update(self, name: str, status: str):
         if status is None:
             status = 'watched'
         elif status not in STATUSES:
@@ -73,7 +73,7 @@ class Watchlist:
 
         self._len -= 1
 
-    def summary(self, statuses=None) -> Dict[str, int]:
+    def summary(self, statuses: List[str] = None) -> Dict[str, int]:
         if statuses is None:
             statuses = STATUSES
 
@@ -92,7 +92,7 @@ class Watchlist:
             writer.writerows(self._items)
 
     @staticmethod
-    def from_file(filename) -> List[WatchListItem]:
+    def from_file(filename: str) -> List[WatchListItem]:
         items = None
         with open(filename, 'r') as f:
             reader = csv.DictReader(f, fieldnames=FIELD_NAMES)

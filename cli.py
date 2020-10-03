@@ -5,7 +5,7 @@ from os import path
 from wl import Watchlist, InvalidStatusError, ItemNotFoundError, STATUSES
 
 
-def print_item(name, status):
+def print_item(name: str, status:str):
     print(f'{name} => {status}')
 
 
@@ -66,7 +66,7 @@ search_parser.add_argument('search', help='search string')
 search_parser.add_argument(
     '-s', '--status',
     help='status to filter by',
-    default='unwatched',
+    nargs="?",
     type=wl_status
 )
 
@@ -80,8 +80,6 @@ summary_parser = subparsers.add_parser(
 )
 
 args = parser.parse_args()
-
-# print(args)
 
 try:
     wl = Watchlist.from_file(filename)
