@@ -46,11 +46,11 @@ class Watchlist:
 
     def search(self, search_string: str, status: str = None) -> Iterable[WatchListItem]:
         if status is None:
-            return filter(lambda i: search_string in i['name'], self)
+            return filter(lambda i: search_string.lower() in i['name'].lower(), self)
         elif status not in STATUSES:
             raise InvalidStatusError
         else:
-            return filter(lambda i: search_string in i['name'] and i['status'] == status, self)
+            return filter(lambda i: search_string.lower() in i['name'].lower() and i['status'] == status, self)
 
     def update(self, name: str, status: str):
         if status is None:
