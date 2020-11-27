@@ -60,6 +60,14 @@ update_parser.add_argument(
     type=wl_status
 )
 
+update_parser = subparsers.add_parser(
+    'rename',
+    aliases=['r'],
+    help='rename an item'
+)
+update_parser.add_argument('name', help="name of the item to rename")
+update_parser.add_argument('new_name', help="new name of the item to rename")
+
 search_parser = subparsers.add_parser(
     'search', aliases=['s'], help="search for an item")
 search_parser.add_argument('search', help='search string')
@@ -92,6 +100,10 @@ if args.command in ['add', 'a']:
 
 elif args.command in ['update', 'u']:
     wl.update(args.name, args.status)
+    write_required = True
+
+elif args.command in ['rename', 'r']:
+    wl.rename(args.name, args.new_name)
     write_required = True
 
 elif args.command in ['remove', 'rm']:

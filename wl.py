@@ -65,6 +65,14 @@ class Watchlist:
         else:
             raise ItemNotFoundError
 
+    def rename(self, name: str, new_name: str):
+        for item in self._items:
+            if item['name'] == name:
+                item['name'] = new_name
+                break
+        else:
+            raise ItemNotFoundError
+
     def remove(self, name: str):
         self._items = [i for i in self._items if i['name'] != name]
 
