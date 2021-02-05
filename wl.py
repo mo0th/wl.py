@@ -96,14 +96,14 @@ class Watchlist:
     def to_file(self, filename: str):
         with open(filename, 'w', newline='') as f:
             writer = csv.DictWriter(f, fieldnames=FIELD_NAMES)
-
+            writer.writeheader()
             writer.writerows(self._items)
 
     @staticmethod
     def from_file(filename: str) -> List[WatchListItem]:
-        items = None
         with open(filename, 'r') as f:
             reader = csv.DictReader(f, fieldnames=FIELD_NAMES)
+            next(reader)
             return Watchlist([r for r in reader])
 
     def __iter__(self) -> Iterator[WatchListItem]:
